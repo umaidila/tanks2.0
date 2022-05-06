@@ -92,7 +92,7 @@ namespace tanks2._0
             // 
             // startButton
             // 
-            this.startButton.Location = new System.Drawing.Point(444, 339);
+            this.startButton.Location = new System.Drawing.Point(433, 342);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(93, 23);
             this.startButton.TabIndex = 4;
@@ -191,7 +191,7 @@ namespace tanks2._0
             // 
             // redactorButton
             // 
-            this.redactorButton.Location = new System.Drawing.Point(444, 479);
+            this.redactorButton.Location = new System.Drawing.Point(444, 478);
             this.redactorButton.Name = "redactorButton";
             this.redactorButton.Size = new System.Drawing.Size(75, 23);
             this.redactorButton.TabIndex = 12;

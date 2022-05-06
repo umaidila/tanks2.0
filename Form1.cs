@@ -348,40 +348,6 @@ namespace tanks2._0
                 if (x + 8 >= getCoords(obst.x) && x + 8 <= getCoords(obst.x)+32 && y + 8 >= getCoords(obst.y) && y + 8 <= getCoords(obst.y)+32)
                     return false;
             return true;
-            /*
-            switch (direction)
-            {
-                case 0:
-                    if (y <= 32)
-                        return false;
-                    foreach (var obst in listObstacles)
-                        if (y == getCoords(obst.y) + 32 && ((x >= getCoords(obst.x) && x < getCoords(obst.x) + 32) || (x + 15 >= getCoords(obst.x) && x + 15 < getCoords(obst.x) + 32)))
-                            return false;
-                    break;
-                case 1:
-                    if (x + 16 >= 992)
-                        return false;
-                    foreach (var obst in listObstacles)
-                        if (x + 16 == getCoords(obst.x) && ((y >= getCoords(obst.y) && y < getCoords(obst.y) + 32) || (y + 15 >= getCoords(obst.y) && y + 15 < getCoords(obst.y) + 32)))
-                            return false;
-                    break;
-                case 2:
-                    if (y + 16 >= 544)
-                        return false;
-                    foreach (var obst in listObstacles)
-                        if (y + 16 == getCoords(obst.y) && ((x >= getCoords(obst.x) && x < getCoords(obst.x) + 32) || (x + 15 >= getCoords(obst.x) && x + 15 < getCoords(obst.x) + 32)))
-                            return false;
-                    break;
-                case 3:
-                    if (x <= 32)
-                        return false;
-                    foreach (var obst in listObstacles)
-                        if (x == getCoords(obst.x) + 32 && ((y >= getCoords(obst.y) && y < getCoords(obst.y) + 32) || (y + 15 >= getCoords(obst.y) && y + 15 < getCoords(obst.y) + 32)))
-                            return false;
-                    break;
-            }
-            return true;
-            */
 
         }
 
