@@ -92,7 +92,7 @@ namespace tanks2._0
             // 
             // startButton
             // 
-            this.startButton.Location = new System.Drawing.Point(433, 342);
+            this.startButton.Location = new System.Drawing.Point(406, 340);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(93, 23);
             this.startButton.TabIndex = 4;
@@ -138,7 +138,7 @@ namespace tanks2._0
             // timer1
             // 
             this.timer1.Interval = 50;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timer1.Tick += new System.EventHandler(this.move);
             // 
             // resultField
             // 
@@ -151,7 +151,7 @@ namespace tanks2._0
             // 
             // finishButton
             // 
-            this.finishButton.Location = new System.Drawing.Point(433, 8);
+            this.finishButton.Location = new System.Drawing.Point(406, 8);
             this.finishButton.Name = "finishButton";
             this.finishButton.Size = new System.Drawing.Size(115, 26);
             this.finishButton.TabIndex = 8;
@@ -161,7 +161,7 @@ namespace tanks2._0
             // 
             // hpBar
             // 
-            this.hpBar.Location = new System.Drawing.Point(423, 427);
+            this.hpBar.Location = new System.Drawing.Point(381, 427);
             this.hpBar.Minimum = 1;
             this.hpBar.Name = "hpBar";
             this.hpBar.Size = new System.Drawing.Size(138, 45);
@@ -173,7 +173,7 @@ namespace tanks2._0
             // 
             this.infolabel5.AutoSize = true;
             this.infolabel5.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.infolabel5.Location = new System.Drawing.Point(423, 393);
+            this.infolabel5.Location = new System.Drawing.Point(385, 391);
             this.infolabel5.Name = "infolabel5";
             this.infolabel5.Size = new System.Drawing.Size(136, 19);
             this.infolabel5.TabIndex = 10;
@@ -183,7 +183,7 @@ namespace tanks2._0
             // 
             this.hplabel.AutoSize = true;
             this.hplabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.hplabel.Location = new System.Drawing.Point(567, 427);
+            this.hplabel.Location = new System.Drawing.Point(536, 427);
             this.hplabel.Name = "hplabel";
             this.hplabel.Size = new System.Drawing.Size(17, 19);
             this.hplabel.TabIndex = 11;
@@ -191,7 +191,7 @@ namespace tanks2._0
             // 
             // redactorButton
             // 
-            this.redactorButton.Location = new System.Drawing.Point(444, 478);
+            this.redactorButton.Location = new System.Drawing.Point(406, 478);
             this.redactorButton.Name = "redactorButton";
             this.redactorButton.Size = new System.Drawing.Size(75, 23);
             this.redactorButton.TabIndex = 12;
