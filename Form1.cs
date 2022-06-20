@@ -24,7 +24,7 @@ namespace tanks2._0
             }
         }
 
-        public struct tank
+        public class tank
         {
             public int x;
             public int y;
@@ -33,7 +33,7 @@ namespace tanks2._0
             public bool move;
         }
 
-        public struct bullet
+        public class bullet
         {
             public int x;
             public int y;
@@ -55,10 +55,15 @@ namespace tanks2._0
         tank player2;
         bullet bullet1;
         bullet bullet2;
-        List<tank> players;
+        //List<tank> players;
         int speed = 4;
         int speedBullet = 16;
         int tickIndex = 0;
+        tank[] players;
+        bullet[] bullets;
+        Control[] gameElems;
+        Control[] menuElems;
+
 
         public Form1()
         {
@@ -69,9 +74,29 @@ namespace tanks2._0
             player2 = new tank();
             bullet1 = new bullet();
             bullet2 = new bullet();
-
-            players = new List<tank> { player1, player2 };
+            players =  new tank[2];
+            players[0] = player1;
+            players[1] = player2;
+            bullets = new bullet[2];
+            bullets[0] = bullet1;
+            bullets[1] = bullet2;
             finishButton.Visible = false;
+            menuElems = new Control[10];
+            menuElems[0] = infolabel1; ///// доделать
+            menuElems[1] = infolabel2;
+            menuElems[2] = infolabel3;
+            menuElems[3] = infolabel4;
+            menuElems[4] = infolabel5;
+            menuElems[5] = startButton;
+            menuElems[6] = resultField;
+            menuElems[7] = hpBar;
+            menuElems[8] = hplabel;
+            menuElems[9] = redactorButton;
+            gameElems = new Control[4];
+            gameElems[0] = Player1Info;
+            gameElems[1] = Player2Info;
+            gameElems[2] = fieldPictureBox;
+            gameElems[3] = finishButton;
             {                
                 listObstacles.Add(new obstacle(9, 0));
                 listObstacles.Add(new obstacle(9, 1));
@@ -130,12 +155,14 @@ namespace tanks2._0
         private void startButton_Click(object sender, EventArgs e)
         {
             picBitmap = new Bitmap(fieldPictureBox.Width, fieldPictureBox.Height);
-            bullet1.active = false;
-            bullet2.active = false;
-            player1.hp = hpBar.Value;
-            player2.hp = hpBar.Value;
-            player1.move = false;
-            player2.move = false;
+            foreach (var player in players)
+            {
+                player.move = false;
+                player.hp = hpBar.Value;
+            }
+            foreach (var bullet in bullets)
+                bullet.active = false;  
+            
             player1.direction = 1;
             player2.direction = 3;
             player1.x = 64;
@@ -143,20 +170,11 @@ namespace tanks2._0
             player2.x = 896;
             player2.y = 288;
 
-            infolabel1.Visible = false;
-            infolabel2.Visible = false;
-            infolabel3.Visible = false;
-            infolabel4.Visible = false;
-            startButton.Visible = false;
-            resultField.Visible = false;
-            infolabel5.Visible = false;
-            hpBar.Visible = false;
-            hplabel.Visible = false;
-            Player1Info.Visible = true;
-            Player2Info.Visible = true;
-            fieldPictureBox.Visible = true;
-            finishButton.Visible = true;
-            redactorButton.Visible = false;
+            foreach (var elem in menuElems)
+                elem.Visible = false;            
+            foreach (var elem in gameElems)
+                elem.Visible = true;
+
             redactorMode = false;
             finishButton.Text = "Завершить игру";
 
@@ -208,20 +226,10 @@ namespace tanks2._0
             bullet1.active = false;
             bullet2.active = false;
 
-            infolabel1.Visible = true;
-            infolabel2.Visible = true;
-            infolabel3.Visible = true;
-            infolabel4.Visible = true;
-            startButton.Visible = true;
-            resultField.Visible = true;
-            Player1Info.Visible = false;
-            Player2Info.Visible = false;
-            fieldPictureBox.Visible = false;
-            finishButton.Visible = false;
-            infolabel5.Visible = true;
-            hpBar.Visible = true;
-            hplabel.Visible = true;
-            redactorButton.Visible = true;
+            foreach (var elem in gameElems)
+                elem.Visible = false;
+            foreach (var elem in menuElems)
+                elem.Visible = true;
 
             if (player1.hp == 0)
                 resultField.Text = "Победил Игрок 2";
@@ -246,38 +254,25 @@ namespace tanks2._0
             g.FillRectangle(b2, player2.x, player2.y, 32, 32);
             g.DrawRectangle(p, player2.x, player2.y, 32, 32);
 
-            switch (player1.direction) 
+            foreach (var player in players) // рисование пушки
             {
-                case 0:
-                    g.DrawLine(p, player1.x + 16, player1.y, player1.x + 16, player1.y - 16);
-                    break;
-                case 1:
-                    g.DrawLine(p, player1.x + 32, player1.y + 16, player1.x + 48, player1.y + 16);
-                    break;
-                case 2:
-                    g.DrawLine(p, player1.x + 16, player1.y + 32, player1.x + 16, player1.y + 48);
-                    break;
-                case 3:
-                    g.DrawLine(p, player1.x, player1.y + 16, player1.x - 16, player1.y + 16);
-                    break;
+                switch (player.direction)
+                {
+                    case 0:
+                        g.DrawLine(p, player.x + 16, player.y, player.x + 16, player.y - 16);
+                        break;
+                    case 1:
+                        g.DrawLine(p, player.x + 32, player.y + 16, player.x + 48, player.y + 16);
+                        break;
+                    case 2:
+                        g.DrawLine(p, player.x + 16, player.y + 32, player.x + 16, player.y + 48);
+                        break;
+                    case 3:
+                        g.DrawLine(p, player.x, player.y + 16, player.x - 16, player.y + 16);
+                        break;
+                }
+               
             }
-
-            switch (player2.direction)
-            {
-                case 0:
-                    g.DrawLine(p, player2.x + 16, player2.y, player2.x + 16, player2.y - 16);
-                    break;
-                case 1:
-                    g.DrawLine(p, player2.x + 32, player2.y + 16, player2.x + 48, player2.y + 16);
-                    break;
-                case 2:
-                    g.DrawLine(p, player2.x + 16, player2.y + 32, player2.x + 16, player2.y + 48);
-                    break;
-                case 3:
-                    g.DrawLine(p, player2.x, player2.y + 16, player2.x - 16, player2.y + 16);
-                    break;
-            }
-
             if (bullet1.active)
             {
                 g.FillEllipse(b1, bullet1.x, bullet1.y, 16, 16);
@@ -351,135 +346,6 @@ namespace tanks2._0
 
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            if (player1.move)
-            {
-                switch (player1.direction)
-                {
-                    case 0:
-                        if (checkBorders(player1.x,player1.y,player1.direction))
-                            player1.y -= speed;
-                        break;
-                    case 1:
-                        if (checkBorders(player1.x, player1.y, player1.direction))                          
-                            player1.x += speed;
-                        break;
-                    case 2:
-                        if (checkBorders(player1.x, player1.y, player1.direction))                            
-                            player1.y += speed;
-                        break;
-                    case 3:
-                        if (checkBorders(player1.x, player1.y, player1.direction))                          
-                            player1.x -= speed;
-                        break;
-                }
-                
-            }
-            if (player2.move)
-            {
-                switch (player2.direction)
-                {
-                    case 0:
-                        if (checkBorders(player2.x, player2.y, player2.direction))                           
-                            player2.y -= speed;
-                        break;
-                    case 1:
-                        if (checkBorders(player2.x, player2.y, player2.direction))                            
-                            player2.x += speed;
-                        break;
-                    case 2:
-                        if (checkBorders(player2.x, player2.y, player2.direction))
-                            player2.y += speed;
-                        break;
-                    case 3:
-                        if (checkBorders(player2.x, player2.y, player2.direction))
-                            player2.x -= speed;
-                        break;
-                }
-            }
-            if (bullet1.active)
-            {
-                switch (bullet1.direction)
-                {
-                    case 0:
-                        if (!checkBullet(bullet1.x, bullet1.y, bullet1.direction)) // снаряд попал в кирпич
-                           bullet1.active = false;
-                        else
-                            bullet1.y -= speedBullet;
-                        break;
-                    case 1:
-                        if (!checkBullet(bullet1.x, bullet1.y, bullet1.direction)) 
-                            bullet1.active = false;
-                        else
-                            bullet1.x += speedBullet;
-                        break;
-                    case 2:
-                        if (!checkBullet(bullet1.x, bullet1.y, bullet1.direction)) 
-                            bullet1.active = false;
-                        else
-                            bullet1.y += speedBullet;
-                        break;
-                    case 3:
-                        if (!checkBullet(bullet1.x, bullet1.y, bullet1.direction)) 
-                            bullet1.active = false;
-                        else
-                            bullet1.x -= speedBullet;
-                        break;
-                }
-                // проверка на попадание
-                if (bullet1.x + 8 > player2.x && bullet1.x + 8 < player2.x + 32 && bullet1.y + 8 > player2.y && bullet1.y + 8 < player2.y + 32)
-                {
-                    bullet1.active = false;
-                    player2.hp--;
-                    Player2Info.Text = "Игрок 2:  " + player2.hp;
-                    if (player2.hp == 0)
-                        finishGame();
-                }
-
-            }
-            if (bullet2.active)
-            {
-                switch (bullet2.direction)
-                {
-                    case 0:
-                        if (!checkBullet(bullet2.x, bullet2.y, bullet2.direction)) // снаряд попал в кирпич
-                            bullet2.active = false;
-                        else
-                            bullet2.y -= speedBullet;
-                        break;
-                    case 1:
-                        if (!checkBullet(bullet2.x, bullet2.y, bullet2.direction))
-                            bullet2.active = false;
-                        else
-                            bullet2.x += speedBullet;
-                        break;
-                    case 2:
-                        if (!checkBullet(bullet2.x, bullet2.y, bullet2.direction))
-                            bullet2.active = false;
-                        else
-                            bullet2.y += speedBullet;
-                        break;
-                    case 3:
-                        if (!checkBullet(bullet2.x, bullet2.y, bullet2.direction))
-                            bullet2.active = false;
-                        else
-                            bullet2.x -= speedBullet;
-                        break;
-                }
-                // проверка на попадание
-                if (bullet2.x + 8 > player1.x && bullet2.x + 8 < player1.x + 32 && bullet2.y + 8 > player1.y && bullet2.y + 8 < player1.y + 32)
-                {
-                    bullet2.active = false;
-                    player1.hp--;
-                    Player1Info.Text = "Игрок 1:  " + player1.hp;
-                    if (player1.hp == 0)
-                        finishGame();
-                }
-            }
-            render();
-        }
-
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {           
             if (e.KeyCode == Keys.W && player1.move == false)
@@ -541,41 +407,18 @@ namespace tanks2._0
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.W && player1.direction == 0)
-            {
+            if (e.KeyCode == Keys.W && player1.direction == 0 ||
+                e.KeyCode == Keys.D && player1.direction == 1 ||
+                e.KeyCode == Keys.S && player1.direction == 2 ||
+                e.KeyCode == Keys.A && player1.direction == 3)
                 player1.move = false;
-            }
-            if (e.KeyCode == Keys.D && player1.direction == 1)
-            {
-                player1.move = false;
-            }
-            if (e.KeyCode == Keys.S && player1.direction == 2)
-            {
-                player1.move = false;
-            }
-            if (e.KeyCode == Keys.A && player1.direction == 3)
-            {
-                player1.move = false;
-            }
-           
+          
+            if (e.KeyCode == Keys.I && player2.direction == 0 ||
+                e.KeyCode == Keys.L && player2.direction == 1 ||
+                e.KeyCode == Keys.K && player2.direction == 2 ||
+                e.KeyCode == Keys.J && player2.direction == 3)
+                player2.move = false;
 
-            if (e.KeyCode == Keys.I && player2.direction == 0)
-            {
-                player2.move = false;
-            }
-            if (e.KeyCode == Keys.L && player2.direction == 1)
-            {
-                player2.move = false;
-            }
-            if (e.KeyCode == Keys.K && player2.direction == 2)
-            {
-                player2.move = false;
-            }
-            if (e.KeyCode == Keys.J && player2.direction == 3)
-            {
-                player2.move = false;
-            }
-            
         }
 
         private void finishButton_Click(object sender, EventArgs e)
@@ -593,23 +436,12 @@ namespace tanks2._0
             redactorMode = true;
 
             picBitmap = new Bitmap(fieldPictureBox.Width, fieldPictureBox.Height);
-            
-            infolabel1.Visible = false;
-            infolabel2.Visible = false;
-            infolabel3.Visible = false;
-            infolabel4.Visible = false;
-            startButton.Visible = false;
-            resultField.Visible = false;
-            infolabel5.Visible = false;
-            hpBar.Visible = false;
-            hplabel.Visible = false;
-            Player1Info.Visible = false;
-            Player2Info.Visible = false;
-            fieldPictureBox.Visible = true;
-            finishButton.Visible = true;
+            foreach (var elem in menuElems)
+                elem.Visible = false;
+            for (int i = 2; i < gameElems.Length; i++)
+                gameElems[i].Visible = true;
+
             finishButton.Text = "Завершить";
-            redactorButton.Visible = false;
-           
             p = new Pen(Color.Black, 2);
             b = new SolidBrush(Color.FromArgb(166, 242, 150));
             g = Graphics.FromImage(picBitmap);
@@ -650,10 +482,8 @@ namespace tanks2._0
         {
             if (redactorMode)
             {
-                if (e.Button == MouseButtons.Left)
+                if (e.Button == MouseButtons.Left && e.X >= 32 && e.X < 992 && e.Y >= 32 && e.Y < 544)
                 {
-                    if (e.X >= 32 && e.X < 992 && e.Y >= 32 && e.Y < 544)
-                    {
                         int indX = (e.X - 32) / 32;
                         int indY = (e.Y - 32) / 32;
                         // пытаемся найти кирпич по таком индексу
@@ -683,9 +513,82 @@ namespace tanks2._0
                         g.DrawRectangle(p, getCoords(indX), getCoords(indY), 32, 32);
 
                         fieldPictureBox.Image = staticBitmap;
-                    }
                 }
             }
+        }
+
+        private void move(object sender, EventArgs e)        
+        {
+            foreach (var player in players)
+                if (player.move)
+                    switch (player.direction)
+                    {
+                        case 0:
+                            if (checkBorders(player.x, player.y, player.direction))
+                                player.y -= speed;
+                            break;
+                        case 1:
+                            if (checkBorders(player.x, player.y, player.direction))
+                                player.x += speed;
+                            break;
+                        case 2:
+                            if (checkBorders(player.x, player.y, player.direction))
+                                player.y += speed;
+                            break;
+                        case 3:
+                            if (checkBorders(player.x, player.y, player.direction))
+                                player.x -= speed;
+                            break;
+                    }
+
+            foreach (var bullet in bullets)
+                if (bullet.active)
+                    switch (bullet.direction)
+                    {
+                        case 0:
+                            if (!checkBullet(bullet.x, bullet.y, bullet.direction)) // снаряд попал в кирпич
+                                bullet.active = false;
+                            else
+                                bullet.y -= speedBullet;
+                            break;
+                        case 1:
+                            if (!checkBullet(bullet.x, bullet.y, bullet.direction))
+                                bullet.active = false;
+                            else
+                                bullet.x += speedBullet;
+                            break;
+                        case 2:
+                            if (!checkBullet(bullet.x, bullet.y, bullet.direction))
+                                bullet.active = false;
+                            else
+                                bullet.y += speedBullet;
+                            break;
+                        case 3:
+                            if (!checkBullet(bullet.x, bullet.y, bullet.direction))
+                                bullet.active = false;
+                            else
+                                bullet.x -= speedBullet;
+                            break;
+                    }
+
+            // проверка на попадание
+            if (bullet1.active && bullet1.x + 8 > player2.x && bullet1.x + 8 < player2.x + 32 && bullet1.y + 8 > player2.y && bullet1.y + 8 < player2.y + 32)
+            {
+                bullet1.active = false;
+                player2.hp--;
+                Player2Info.Text = "Игрок 2:  " + player2.hp;
+                if (player2.hp == 0)
+                    finishGame();
+            }
+            if (bullet2.active && bullet2.x + 8 > player1.x && bullet2.x + 8 < player1.x + 32 && bullet2.y + 8 > player1.y && bullet2.y + 8 < player1.y + 32)
+            {
+                bullet2.active = false;
+                player1.hp--;
+                Player1Info.Text = "Игрок 1:  " + player1.hp;
+                if (player1.hp == 0)
+                    finishGame();
+            }
+            render();
         }
     }
 }
